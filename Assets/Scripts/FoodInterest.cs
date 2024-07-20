@@ -29,9 +29,26 @@ public class FoodInterest : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(UpdateCanvas());
+    }
+
+    IEnumerator UpdateCanvas()
+    {
+        if (orderParent == null) orderParent = transform.GetChild(0).GetChild(0).GetComponent<RectTransform>();
+        if (allergicParent == null) allergicParent = transform.GetChild(1).GetChild(0).GetComponent<RectTransform>();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(orderParent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(allergicParent);
+
+        yield return null;
 
 
-
+        LayoutRebuilder.ForceRebuildLayoutImmediate(orderParent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(allergicParent);
     }
 
     private void Start()
