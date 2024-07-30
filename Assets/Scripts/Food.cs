@@ -47,8 +47,10 @@ public class Food : MonoBehaviour
         SetRandomFood();
     }
 
-    private void SetRandomFood()
+    public void SetRandomFood()
     {
+        rb.isKinematic = false;
+        transform.parent = null;
         moveSpeed = GameManager.instance.foodMoveSpeed;
         satay = false;
         staticSprite = Stick.instance.SpriteRenderer;   
@@ -59,6 +61,7 @@ public class Food : MonoBehaviour
         StartCoroutine(DropDelay());
         RecalculatePolygonCollider();
         SetPositionAboveScreen();
+        gameObject.SetActive(true);
     }
 
     private IEnumerator DropDelay()

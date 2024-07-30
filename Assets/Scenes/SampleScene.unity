@@ -4192,6 +4192,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 378a5e5cebd4ca24280478e3175b5d7f, type: 3}
   - {fileID: 21300000, guid: 05c440b3a2cf3214fa2bf09facf5f3f6, type: 3}
   - {fileID: 21300000, guid: e9478005077415149b0c709d0b6f28de, type: 3}
+  amountToPool: 6
+  pooledObjects: []
   mainPanel: {fileID: 941702082}
 --- !u!4 &1555507454
 Transform:

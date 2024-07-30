@@ -134,7 +134,11 @@ public class Stick : MonoBehaviour
 
         float speed = 2;
 
-        Destroy(food.GetComponent<Rigidbody2D>());
+        //Destroy(food.GetComponent<Rigidbody2D>());
+
+        food.GetComponent<Rigidbody2D>().isKinematic = true;
+
+        //food.GetComponent<Rigidbody2D>().
 
         food.transform.SetParent(transform);
 
@@ -172,8 +176,8 @@ public class Stick : MonoBehaviour
 
         coroutines.RemoveAt(coroutines.Count - 1);
 
-        GameManager.instance.SpawnFood(1);
-
+        //GameManager.instance.SpawnFood(1);
+        GameManager.instance.RespawnFood();
 
         if (foods.Count >= maxFood && coroutines.Count <= 0)
         {
@@ -227,7 +231,8 @@ public class Stick : MonoBehaviour
 
         foreach(Food food in GetComponentsInChildren<Food>())
         {
-            Destroy(food.gameObject);
+            food.SetRandomFood();
+            //food.gameObject.SetActive(false);
         }
 
         targetPosition = initialStickPosition;

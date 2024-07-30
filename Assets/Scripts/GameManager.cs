@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class GameManager : MonoBehaviour
     private GameObject foodPrefab;
 
     public List<Sprite> sprites = new List<Sprite>();
+
+    public int amountToPool;
+
+
+    public List<GameObject> pooledObjects;
 
     private float foodDelay = 2;
 
@@ -53,11 +59,36 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeFood()
     {
-        int foodCount = 6;
-        for (int i = 0; i < foodCount; i++)
+        for (int i = 0; i < amountToPool; i++)
         {
             GameObject food = Instantiate(foodPrefab);
+            pooledObjects.Add(food);
             yield return new WaitForSeconds(foodDelay);
+        }
+    }
+
+    public GameObject GetPooledObject()
+    {
+        for (int i = 0; i < pooledObjects.Count; i++)
+        {
+            if (!pooledObjects[i].activeInHierarchy)
+            {
+                return pooledObjects[i];
+            }
+        }
+        return null;
+    }
+
+    public void RespawnFood()
+    {
+        StartCoroutine(RespawningFood());
+    }
+
+    private IEnumerator RespawningFood()
+    {
+        while(GetPooledObject() != null) {
+            GetPooledObject().GetComponent<Food>().SetRandomFood();
+            yield return null;
         }
     }
 
@@ -65,11 +96,16 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(SpawningFood(count));
     }
+
     private IEnumerator SpawningFood(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject food = Instantiate(foodPrefab);
+            GameObject food = GetPooledObject();
+            if (food != null)
+            {
+                food.GetComponent<Food>().SetRandomFood();
+            }
             yield return new WaitForSeconds(foodDelay);
         }
     }
